@@ -5,7 +5,8 @@
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <!--<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault> -->
+	<AvaloniaUseStaticResourceGenerator>true</AvaloniaUseStaticResourceGenerator>
   </PropertyGroup>
 
   <ItemGroup>

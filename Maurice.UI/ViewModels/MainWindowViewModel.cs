@@ -1,77 +1,78 @@
-﻿using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform.Storage;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System.Reactive;
 using System.Threading.Tasks;
-using Avalonia.Threading;
-using System.Collections.Generic;
-using System;
-using Avalonia.Controls;
+using Maurice.Core.Services;
+using System.Collections.ObjectModel;
+using Maurice.Core.Models;
 using Maurice.UI.Views;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
 
 namespace Maurice.UI.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
+        private readonly FileService _fileService;
         private string _selectedFileName;
+        private ObservableCollection<XmlEntry> _xmlData;
+        public ReactiveCommand<Unit, Unit> OpenConfiguracionCommand  { get; }
+
+
         public string SelectedFileName
         {
             get => _selectedFileName;
             set => this.RaiseAndSetIfChanged(ref _selectedFileName, value);
         }
 
-        public ReactiveCommand<Unit, Unit> SelectFileCommand { get; }
+        public ObservableCollection<XmlEntry> XmlData
+        {
+            get => _xmlData;
+            set => this.RaiseAndSetIfChanged(ref _xmlData, value);
+        }
 
-        public ReactiveCommand<Unit, Unit> OpenConfiguracionCommand { get; }
+        public ReactiveCommand<Unit, Unit> SelectFileCommand { get; }
 
         public MainWindowViewModel()
         {
-            SelectFileCommand = ReactiveCommand.CreateFromTask(async () =>
-            {
-                await SelectXmlFileAsync();
-            });
-
+            _fileService = new FileService();
+            XmlData = new ObservableCollection<XmlEntry>();
+            SelectFileCommand = ReactiveCommand.CreateFromTask(SelectXmlFileAsync);
             OpenConfiguracionCommand = ReactiveCommand.Create(OpenConfiguracion);
 
         }
 
         private async Task SelectXmlFileAsync()
         {
-            var mainWindow = Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-            if (mainWindow == null || mainWindow.MainWindow == null)
+            var mainWindow = Avalonia.Application.Current?.ApplicationLifetime switch
             {
-                return; // Handle the case where the main window is not available
-            }
+                Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow,
+                _ => null
+            };
 
-            var options = new FilePickerOpenOptions
+            if (mainWindow == null) return;
+
+            var dialog = new Avalonia.Platform.Storage.FilePickerOpenOptions
             {
-                Title = "Select an XML File",
+                Title = "Select XML File",
                 FileTypeFilter = new[]
-            {
-                new FilePickerFileType("XML Files") { Patterns = new[] { "*.xml" } }
-            },
+                {
+                    new Avalonia.Platform.Storage.FilePickerFileType("XML Files") { Patterns = new[] { "*.xml" } }
+                },
                 AllowMultiple = false
             };
 
-            try
+            var files = await mainWindow.StorageProvider.OpenFilePickerAsync(dialog);
+            if (files.Count > 0)
             {
-                IReadOnlyList<IStorageFile> files = null; // Initialize files to null
+                SelectedFileName = files[0].Name;
 
-                await Dispatcher.UIThread.InvokeAsync(async () =>
-                {
-                    files = await mainWindow.MainWindow.StorageProvider.OpenFilePickerAsync(options);
-                });
+                var data = _fileService.ParseXml(files[0].Path.LocalPath);
 
-                if (files != null && files.Count > 0) // Check for null before accessing Count
+                XmlData.Clear();
+                foreach (var kvp in data)
                 {
-                    SelectedFileName = files[0].Name;
+                    XmlData.Add(new XmlEntry { Key = kvp.Key, Value = kvp.Value });
                 }
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions appropriately, e.g., show a message box
-                Console.WriteLine($"Error selecting file: {ex.Message}");
             }
         }
 
@@ -80,7 +81,6 @@ namespace Maurice.UI.ViewModels
             var newWindow = new Configuracion();
             ShowWindow(newWindow);
         }
-
         private void ShowWindow(Window window)
         {
             var lifetime = Avalonia.Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;

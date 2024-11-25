@@ -1,17 +1,32 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="Maurice.UI.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
         xmlns:vm="clr-namespace:Maurice.UI.ViewModels"
+        xmlns:models="clr-namespace:Maurice.Core.Models;assembly=Maurice.Core"
         Title="MainWindow"
         Width="800"
         Height="600">
-	<StackPanel>
+	<Window.DataContext>
+		<vm:MainWindowViewModel />
+	</Window.DataContext>
+
+	<StackPanel Margin="10">
 		<Button Content="Select XML File" Command="{Binding SelectFileCommand}" Margin="5"/>
-		<TextBlock Text="{Binding SelectedFileName}" Margin="5" FontSize="14" TextWrapping="Wrap"/>
-		<!-- Button to open Window1 -->
 		<Button Content="Configuracion" Command="{Binding OpenConfiguracionCommand}" Margin="5"/>
 
-		<!-- Button to open Window 2 -->
+		<TextBlock Text="{Binding SelectedFileName}" Margin="5" FontWeight="Bold" />
+
+		<ListBox ItemsSource="{Binding XmlData}" Margin="5">
+			<!-- Corrected Binding -->
+			<ListBox.ItemTemplate>
+				<DataTemplate DataType="models:XmlEntry">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Key}" FontWeight="Bold" Margin="5"/>
+						<TextBlock Text=": " />
+						<TextBlock Text="{Binding Value}" Margin="5"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
 	</StackPanel>
 </Window>
