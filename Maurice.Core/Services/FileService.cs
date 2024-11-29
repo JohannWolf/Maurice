@@ -36,16 +36,15 @@ namespace Maurice.Core.Services
                     result["RFC Receptor"] = receptor.Attribute("Rfc")?.Value;
                 }
 
-                var impuestos = comprobante.Descendants(XName.Get("Impuestos", "http://www.sat.gob.mx/cfd/4")).FirstOrDefault();
+                var impuestos = comprobante.Element(XName.Get("Impuestos", "http://www.sat.gob.mx/cfd/4"));
                 if (impuestos != null)
                 {
-                    result["Total Impuesto"] = impuestos.Attribute("TotalImpuestosTrasladados")?.Value;
-
                     var traslado = impuestos.Descendants(XName.Get("Traslado", "http://www.sat.gob.mx/cfd/4")).FirstOrDefault();
                     if (traslado != null)
                     {
                         result["Base"] = traslado.Attribute("Base")?.Value;
                         result["Tasa"] = traslado.Attribute("TasaOCuota")?.Value;
+                        result["Importe"] = traslado.Attribute("Importe")?.Value;
                     }
                 }
             }
