@@ -36,6 +36,17 @@ namespace Maurice.Core.Services
                     result["RFC Receptor"] = receptor.Attribute("Rfc")?.Value;
                 }
 
+                var concepto = comprobante.Descendants(XName.Get("Concepto", "http://www.sat.gob.mx/cfd/4")).FirstOrDefault();
+                if (concepto != null)
+                {
+                    var value = concepto.Attribute("ClaveProdServ")?.Value;
+
+                    if(value == "85121600")
+                    {
+                        result["Descripcion"] = "Honorarios medicos y gastos hospitalarios";
+                    }
+                }
+
                 var impuestos = comprobante.Element(XName.Get("Impuestos", "http://www.sat.gob.mx/cfd/4"));
                 if (impuestos != null)
                 {
