@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 namespace Maurice.Core.Services
 {
@@ -53,9 +48,9 @@ namespace Maurice.Core.Services
                     var traslado = impuestos.Descendants(XName.Get("Traslado", "http://www.sat.gob.mx/cfd/4")).FirstOrDefault();
                     if (traslado != null)
                     {
-                        result["Base"] = traslado.Attribute("Base")?.Value;
-                        result["Tasa"] = traslado.Attribute("TasaOCuota")?.Value;
-                        result["Importe"] = traslado.Attribute("Importe")?.Value;
+                        result["Base"] = traslado.Attribute("Base")?.Value ?? "0.00"; // Default value for Base
+                        result["Tasa"] = traslado.Attribute("TasaOCuota")?.Value ?? "excento";
+                        result["Importe"] = traslado.Attribute("Importe")?.Value ?? "0.00"; // Default value for Importe
                     }
                 }
             }

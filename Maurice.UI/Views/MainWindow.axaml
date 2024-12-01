@@ -15,6 +15,7 @@
 		<Button Content="Configuracion" Command="{Binding OpenConfiguracionCommand}" Margin="5"/>
 
 		<TextBlock Text="{Binding SelectedFileName}" Margin="5" FontWeight="Bold" />
+		<TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Margin="5" TextWrapping="Wrap"/>
 
 		<ListBox ItemsSource="{Binding XmlData}" Margin="5">
 			<!-- Corrected Binding -->
@@ -28,5 +29,6 @@
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
+	<Button Content="Save to Database" Command="{Binding SaveToDatabaseCommand}" Margin="5"/>
 	</StackPanel>
 </Window>
