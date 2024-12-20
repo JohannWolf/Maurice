@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Maurice.Data\Maurice.Data.csproj" />
     <ProjectReference Include="..\Maurice.Infrastructure\Maurice.Infrastructure.csproj" />
   </ItemGroup>
 

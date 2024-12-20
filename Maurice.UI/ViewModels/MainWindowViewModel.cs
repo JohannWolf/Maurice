@@ -21,7 +21,9 @@ namespace Maurice.UI.ViewModels
         private ObservableCollection<XmlEntry> _xmlData;
         private IDictionary<string, string> _currentFacturaData;
 
-        public ReactiveCommand<Unit, Unit> OpenConfiguracionCommand  { get; }
+        public ReactiveCommand<Unit, Unit> OpenConfiguracionCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenResumenMensualCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenResumenAnualCommand { get; }
         public ReactiveCommand<Unit, Unit> SaveToDatabaseCommand { get; }
 
 
@@ -55,7 +57,11 @@ namespace Maurice.UI.ViewModels
             SelectFileCommand = ReactiveCommand.CreateFromTask(SelectXmlFileAsync);
             SaveToDatabaseCommand = ReactiveCommand.Create(SaveToDatabase);
             OpenConfiguracionCommand = ReactiveCommand.Create(OpenConfiguracion);
+            OpenResumenMensualCommand = ReactiveCommand.Create(OpeResumenMensual);
+            OpenResumenAnualCommand = ReactiveCommand.Create(OpenResumenAnual);
 
+            // Initialize SQLite database on startup
+            _databaseService.InitializeDatabase();
         }
 
         private async Task SelectXmlFileAsync()
@@ -98,7 +104,8 @@ namespace Maurice.UI.ViewModels
         {
             if (_currentFacturaData != null && _currentFacturaData.Count > 0)
             {
-                if (!_databaseService.SaveFactura(_currentFacturaData, out string errorMessage))
+                string fileName = SelectedFileName;
+                if (!_databaseService.SaveFactura(_currentFacturaData, fileName, out string errorMessage))
                 {
                     ErrorMessage = errorMessage; // Display error message in UI
                 }
@@ -115,8 +122,33 @@ namespace Maurice.UI.ViewModels
 
         private void OpenConfiguracion()
         {
-            var newWindow = new Configuracion();
-            ShowWindow(newWindow);
+            // Ensure you have a reference to the Avalonia.Window class
+            var configuracionWindow = new Configuracion
+            {
+                DataContext = new ConfiguracionViewModel() // Set the ViewModel as the DataContext
+            };
+
+            configuracionWindow.Show();
+        }
+        private void OpeResumenMensual()
+        {
+            // Ensure you have a reference to the Avalonia.Window class
+            var resumenMensualWindow = new ResumenMensual
+            {
+                DataContext = new ResumenMensualViewModel() // Set the ViewModel as the DataContext
+            };
+
+            resumenMensualWindow.Show();
+        }
+        private void OpenResumenAnual()
+        {
+            // Ensure you have a reference to the Avalonia.Window class
+            var resumenAnualWindow = new ResumenAnual
+            {
+                DataContext = new ResumenAnualViewModel() // Set the ViewModel as the DataContext
+            };
+
+            resumenAnualWindow.Show();
         }
         private void ShowWindow(Window window)
         {

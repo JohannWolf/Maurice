@@ -1,9 +1,35 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Maurice.UI.Views.Configuracion"
-        Title="Configuracion">
-	<TextBlock Text="Welcome to Window 1!" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+		x:Class="Maurice.UI.Views.Configuracion"
+        xmlns:vm="clr-namespace:Maurice.UI.ViewModels"
+        xmlns:models="clr-namespace:Maurice.Core.Models;assembly=Maurice.Core"
+		Title="Configuracion"
+        Width="400"
+        Height="330">
+	<Window.DataContext>
+		<vm:ConfiguracionViewModel />
+	</Window.DataContext>
+
+	<StackPanel Margin="15">
+		<TextBlock Text="RFC" />
+		<MaskedTextBox Text="{Binding Rfc}" Margin="0,5" Mask=">LLLL000000AAA" />
+		<TextBlock Text="Nombre" />
+		<TextBox Text="{Binding Nombre}" Margin="0,5" />
+
+		<TextBlock Text="Codigo Postal" />
+		<TextBox Text="{Binding CodigoPostal}" Margin="0,5" />
+
+		<TextBlock Text="Regimen Fiscal" />
+		<ComboBox ItemsSource="{Binding RegimenFiscalOptions}"
+          SelectedItem="{Binding SelectedRegimenFiscal}"
+          Margin="1">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Descripcion}" />
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+
+		<Button Content="Save" Command="{Binding SaveCommand}" Margin="0,20" />
+	</StackPanel>
 </Window>

@@ -13,7 +13,8 @@
 	<StackPanel Margin="10">
 		<Button Content="Select XML File" Command="{Binding SelectFileCommand}" Margin="5"/>
 		<Button Content="Configuracion" Command="{Binding OpenConfiguracionCommand}" Margin="5"/>
-
+		<Button Content="Resumen mensual" Command="{Binding OpenResumenMensualCommand}" Margin="5"/>
+		<Button Content="Resumen anual" Command="{Binding OpenResumenAnualCommand}" Margin="5"/>
 		<TextBlock Text="{Binding SelectedFileName}" Margin="5" FontWeight="Bold" />
 		<TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Margin="5" TextWrapping="Wrap"/>
 

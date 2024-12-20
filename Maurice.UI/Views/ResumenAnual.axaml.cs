@@ -3,12 +3,11 @@ using Maurice.UI.ViewModels;
 
 namespace Maurice.UI.Views
 {
-    public partial class Configuracion : Window
+    public partial class ResumenAnual : Window
     {
-        public Configuracion()
+        public ResumenAnual()
         {
             InitializeComponent();
-            DataContext = new ConfiguracionViewModel();
         }
     }
 }
