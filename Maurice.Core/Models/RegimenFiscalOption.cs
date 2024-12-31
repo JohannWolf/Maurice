@@ -2,7 +2,7 @@
 {
     public class RegimenFiscalOption
     {
-        public string Code { get; set; }
+        public string Codigo { get; set; }
         public string Descripcion { get; set; }
     }
 }

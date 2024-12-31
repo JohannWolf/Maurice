@@ -4,8 +4,7 @@ using System.Reactive;
 using Maurice.Data.Services;
 using System;
 using System.Threading.Tasks;
-using Maurice.Core.Models;
-using Avalonia.Controls;
+using Maurice.Data.DBModels;
 
 namespace Maurice.UI.ViewModels
 {
@@ -34,15 +33,15 @@ namespace Maurice.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref _codigoPostal, value);
         }
 
-        private RegimenFiscalOption _selectedRegimenFiscal;
-        public RegimenFiscalOption SelectedRegimenFiscal
+        private RegimenFiscal _selectedRegimenFiscal;
+        public RegimenFiscal SelectedRegimenFiscal
         {
             get => _selectedRegimenFiscal;
             set => this.RaiseAndSetIfChanged(ref _selectedRegimenFiscal, value);
         }
 
-        private ObservableCollection<RegimenFiscalOption> _regimenFiscalOptions;
-        public ObservableCollection<RegimenFiscalOption> RegimenFiscalOptions
+        private ObservableCollection<RegimenFiscal> _regimenFiscalOptions;
+        public ObservableCollection<RegimenFiscal> RegimenFiscalOptions
         {
             get => _regimenFiscalOptions;
             set => this.RaiseAndSetIfChanged(ref _regimenFiscalOptions, value);
@@ -61,7 +60,7 @@ namespace Maurice.UI.ViewModels
         {
             try
             {
-                RegimenFiscalOptions = new ObservableCollection<RegimenFiscalOption>( _databaseService.GetRegimenFiscalOptions());
+                RegimenFiscalOptions = new ObservableCollection<RegimenFiscal>( _databaseService.GetRegimenFiscalOptions());
                 // Optionally set the first item as selected:
                 if (RegimenFiscalOptions.Count > 0)
                 {
@@ -77,7 +76,7 @@ namespace Maurice.UI.ViewModels
 
         private void SaveUserData()
         {
-            string regimenFiscal = SelectedRegimenFiscal?.Code; // Assuming your model uses "Code"
+            string regimenFiscal = SelectedRegimenFiscal?.Codigo; 
             if (!_databaseService.SaveUserData(Rfc, Nombre, CodigoPostal, regimenFiscal, out string errorMessage))
             {
                 // Handle the error (e.g., display a message box)
