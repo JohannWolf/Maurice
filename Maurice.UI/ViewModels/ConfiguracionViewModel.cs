@@ -5,6 +5,7 @@ using Maurice.Data.Services;
 using System;
 using System.Threading.Tasks;
 using Maurice.Data.DBModels;
+using System.Collections.Generic;
 
 namespace Maurice.UI.ViewModels
 {
@@ -76,7 +77,7 @@ namespace Maurice.UI.ViewModels
 
         private void SaveUserData()
         {
-            string regimenFiscal = SelectedRegimenFiscal?.Codigo; 
+            List<RegimenFiscal> regimenFiscal = new List<RegimenFiscal> { SelectedRegimenFiscal };
             if (!_databaseService.SaveUserData(Rfc, Nombre, CodigoPostal, regimenFiscal, out string errorMessage))
             {
                 // Handle the error (e.g., display a message box)

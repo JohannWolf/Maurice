@@ -12,7 +12,10 @@ namespace Maurice.Data.Context
         public DbSet<LimitesIsrSat> LimitesIsrSat { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var dbPath = Path.Combine(AppContext.BaseDirectory, "maurice.db");
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
+            var dbPath = System.IO.Path.Join(path, "maurice.db");
+            //var dbPath = Path.Combine(AppContext.BaseDirectory, "maurice.db");
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
 

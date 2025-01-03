@@ -18,6 +18,7 @@ namespace Maurice.UI.ViewModels
         private readonly DatabaseService _databaseService;
         private string _selectedFileName;
         private string _errorMessage;
+        private string _successMessage;
         private ObservableCollection<XmlEntry> _xmlData;
         private IDictionary<string, string> _currentFacturaData;
 
@@ -38,6 +39,12 @@ namespace Maurice.UI.ViewModels
         {
             get => _errorMessage;
             set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
+        }
+
+        public string SuccessMessage
+        {
+            get => _successMessage;
+            set => this.RaiseAndSetIfChanged(ref _successMessage, value);
         }
 
         public ObservableCollection<XmlEntry> XmlData
@@ -91,6 +98,7 @@ namespace Maurice.UI.ViewModels
 
                 _currentFacturaData = _fileService.ParseXml(files[0].Path.LocalPath);
                 ErrorMessage = string.Empty; // Clear previous errors
+                SuccessMessage = string.Empty; // Clear previous success messages
 
                 XmlData.Clear();
                 foreach (var kvp in _currentFacturaData)
@@ -111,12 +119,13 @@ namespace Maurice.UI.ViewModels
                 }
                 else
                 {
-                    ErrorMessage = "Factura saved successfully.";
+                    SuccessMessage = "Factura guardada exitosamente.";
+                    XmlData.Clear();
                 }
             }
             else
             {
-                ErrorMessage = "No data to save. Please select an XML file first.";
+                ErrorMessage = "Error, ningun dato guardado.";
             }
         }
 

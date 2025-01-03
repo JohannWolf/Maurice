@@ -6,7 +6,7 @@ namespace Maurice.Data.DBModels
     {
         public int Id { get; set; }
         [Required]
-        public string Codigo { get; set; } = string.Empty;
+        public int Codigo { get; set; }
         [Required]
         public string Descripcion { get; set; } = string.Empty ;
     }

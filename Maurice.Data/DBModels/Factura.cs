@@ -6,6 +6,8 @@ namespace Maurice.Data.DBModels
     {
         public int Id { get; set; }
         [Required]
+        public string Uuid { get; set; }
+        [Required]
         public string Folio { get; set; } = string.Empty;
         [Required]
         public DateTime Fecha {  get; set; } 

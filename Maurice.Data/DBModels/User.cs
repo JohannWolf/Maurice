@@ -13,6 +13,6 @@ namespace Maurice.Data.DBModels
         [Required]
         public string CodigoPostal {  get; set; } = string.Empty;
         [Required]
-        public string RegimenFiscal {  get; set; } = string.Empty;
+        public List<RegimenFiscal> RegimenFiscal {  get; set; }
     }
 }

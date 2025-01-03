@@ -2,7 +2,7 @@
 
 namespace Maurice.Core.Services
 {
-    public class FileService
+    public class FileService:IFileService
     {
         public IDictionary<string, string> ParseXml(string filePath)
         {
@@ -17,6 +17,13 @@ namespace Maurice.Core.Services
             {
                 result["Folio"] = comprobante.Attribute("Folio")?.Value;
                 result["Fecha"] = comprobante.Attribute("Fecha")?.Value;
+
+                var complemento = comprobante.Element(XName.Get("Complemento", "http://www.sat.gob.mx/cfd/4")); 
+                if (complemento != null)
+                {
+                    var timbreFiscalDigital = complemento.Element(XName.Get("TimbreFiscalDigital", "http://www.sat.gob.mx/TimbreFiscalDigital")); if (timbreFiscalDigital != null)
+                    result["UUID"] = timbreFiscalDigital.Attribute("UUID")?.Value ?? "NA"; // Default value for UUID
+                } 
 
                 var emisor = comprobante.Element(XName.Get("Emisor", "http://www.sat.gob.mx/cfd/4"));
                 if (emisor != null)

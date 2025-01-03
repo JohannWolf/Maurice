@@ -1,5 +1,6 @@
 ﻿using Maurice.Data.Context;
 using Maurice.Data.DBModels;
+using System;
 
 namespace Maurice.Data.Services
 {
@@ -11,7 +12,7 @@ namespace Maurice.Data.Services
             context.Database.EnsureCreated();
         }
 
-        public bool SaveUserData(string rfc, string nombre, string codigoPostal, string regimenFiscal, out string errorMessage)
+        public bool SaveUserData(string rfc, string nombre, string codigoPostal, List<RegimenFiscal> regimenFiscal, out string errorMessage)
         {
             errorMessage = string.Empty;
 
@@ -32,7 +33,7 @@ namespace Maurice.Data.Services
             }
             catch (Exception ex)
             {
-                errorMessage = $"Error saving user data: {ex.Message}";
+                errorMessage = $"Error al guardar datos: {ex.Message}";
                 return false;
             }
         }
@@ -44,8 +45,17 @@ namespace Maurice.Data.Services
             try
             {
                 using var context = new MauriceDbContext();
+
+                var uuid = facturaData.TryGetValue("UUID", out string found)? found : null;
+
+
+                // Check for duplicate UUID
+                bool isDuplicate = CheckForDuplicates(uuid);
+
+                if (!isDuplicate) {
                 var factura = new Factura
                 {
+                    Uuid = uuid,
                     Folio = facturaData.TryGetValue("Folio", out string folio) ? folio : null,
                     Fecha = (DateTime)(facturaData.TryGetValue("Fecha", out var fechaStr) && DateTime.TryParse(fechaStr, out var fecha) ? fecha : (DateTime?)null),
                     RfcEmisor = facturaData.TryGetValue("RFC Emisor", out var rfcEmisor) ? rfcEmisor : null,
@@ -62,10 +72,16 @@ namespace Maurice.Data.Services
                 context.Facturas.Add(factura);
                 context.SaveChanges();
                 return true;
+                }
+                else
+                {
+                    errorMessage = "Error, la factura ya esta en el sistema.";
+                    return false;
+                }
             }
             catch (Exception ex)
             {
-                errorMessage = $"Error saving factura: {ex.Message}";
+                errorMessage = $"Error al guardar factura: {ex.Message}";
                 return false;
             }
         }
@@ -76,7 +92,7 @@ namespace Maurice.Data.Services
             return context.RegimenFiscal.ToList();
         }
 
-        public bool SaveRegimenFiscal(string code, string description, out string errorMessage)
+        public bool SaveRegimenFiscal(int code, string description, out string errorMessage)
         {
             errorMessage = string.Empty;
 
@@ -98,6 +114,15 @@ namespace Maurice.Data.Services
                 errorMessage = $"Error saving regimen fiscal: {ex.Message}";
                 return false;
             }
+        }
+
+        public bool CheckForDuplicates(string id)
+        {
+            using var context = new MauriceDbContext();
+            var fct = context.Facturas
+                        .SingleOrDefault(f => f.Uuid == id);
+
+            return fct != null;
         }
     }
 }
