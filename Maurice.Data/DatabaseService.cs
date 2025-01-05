@@ -1,10 +1,9 @@
 ﻿using Maurice.Data.Context;
 using Maurice.Data.DBModels;
-using System;
 
 namespace Maurice.Data.Services
 {
-    public class DatabaseService
+    public class DatabaseService : IDatabaseService
     {
         public void InitializeDatabase()
         {

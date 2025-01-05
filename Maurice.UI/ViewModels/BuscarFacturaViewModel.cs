@@ -2,7 +2,7 @@
 
 namespace Maurice.UI.ViewModels
 {
-    public class ResumenAnualViewModel : ReactiveObject
+    public class BuscarFacturaViewModel : ReactiveObject
     {
     }
 }

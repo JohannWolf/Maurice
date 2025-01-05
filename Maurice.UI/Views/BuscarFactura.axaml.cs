@@ -3,9 +3,9 @@ using Maurice.UI.ViewModels;
 
 namespace Maurice.UI.Views
 {
-    public partial class ResumenMensual : Window
+    public partial class BuscarFactura : Window
     {
-        public ResumenMensual()
+        public BuscarFactura()
         {
             InitializeComponent();
         }

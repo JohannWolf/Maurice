@@ -26,6 +26,8 @@ namespace Maurice.UI.ViewModels
         public ReactiveCommand<Unit, Unit> OpenResumenMensualCommand { get; }
         public ReactiveCommand<Unit, Unit> OpenResumenAnualCommand { get; }
         public ReactiveCommand<Unit, Unit> SaveToDatabaseCommand { get; }
+        public ReactiveCommand<Unit, Unit> SelectFileCommand { get; }
+        public ReactiveCommand<Unit, Unit> SearchFacturaCommand { get; }
 
 
 
@@ -53,8 +55,6 @@ namespace Maurice.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref _xmlData, value);
         }
 
-        public ReactiveCommand<Unit, Unit> SelectFileCommand { get; }
-
         public MainWindowViewModel()
         {
             _fileService = new FileService();
@@ -66,6 +66,7 @@ namespace Maurice.UI.ViewModels
             OpenConfiguracionCommand = ReactiveCommand.Create(OpenConfiguracion);
             OpenResumenMensualCommand = ReactiveCommand.Create(OpeResumenMensual);
             OpenResumenAnualCommand = ReactiveCommand.Create(OpenResumenAnual);
+            SearchFacturaCommand = ReactiveCommand.Create(OpenBuscarFactura);
 
             // Initialize SQLite database on startup
             _databaseService.InitializeDatabase();
@@ -127,6 +128,17 @@ namespace Maurice.UI.ViewModels
             {
                 ErrorMessage = "Error, ningun dato guardado.";
             }
+        }
+
+        private void OpenBuscarFactura()
+        {
+            // Ensure you have a reference to the Avalonia.Window class
+            var buscarFacturaWindow = new BuscarFactura
+            {
+                DataContext = new BuscarFacturaViewModel() // Set the ViewModel as the DataContext
+            };
+
+            buscarFacturaWindow.Show();
         }
 
         private void OpenConfiguracion()

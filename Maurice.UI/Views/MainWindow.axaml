@@ -11,27 +11,28 @@
 	</Window.DataContext>
 	<ScrollViewer>
 		<StackPanel Margin="10">
-			<Button Content="Select XML File" Command="{Binding SelectFileCommand}" Margin="5"/>
-			<Button Content="Configuracion" Command="{Binding OpenConfiguracionCommand}" Margin="5"/>
-			<Button Content="Resumen mensual" Command="{Binding OpenResumenMensualCommand}" Margin="5"/>
-			<Button Content="Resumen anual" Command="{Binding OpenResumenAnualCommand}" Margin="5"/>
-			<TextBlock Text="{Binding SelectedFileName}" Margin="5" FontWeight="Bold" />
-			<TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Margin="5" TextWrapping="Wrap"/>
-			<TextBlock Text="{Binding SuccessMessage}" Foreground="Blue" Margin="5" TextWrapping="Wrap"/>
+			<Button Content="Cargar Factura XML" Command="{Binding SelectFileCommand}" Margin="20, 5"/>
+			<Button Content="Buscar Factura" Command="{Binding SearchFacturaCommand}" Margin="20, 5"/>
+			<Button Content="Configuracion" Command="{Binding OpenConfiguracionCommand}" Margin="20, 5"/>
+			<Button Content="Resumen mensual" Command="{Binding OpenResumenMensualCommand}" Margin="20, 5"/>
+			<Button Content="Resumen anual" Command="{Binding OpenResumenAnualCommand}" Margin="20, 5"/>
+			<TextBlock Text="{Binding SelectedFileName}" Margin="20, 5" FontWeight="Bold" />
+			<TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Margin="20,5" TextWrapping="Wrap"/>
+			<TextBlock Text="{Binding SuccessMessage}" Foreground="Blue" Margin="20,5" TextWrapping="Wrap"/>
 
-			<ListBox ItemsSource="{Binding XmlData}" Margin="5">
+			<ListBox ItemsSource="{Binding XmlData}" Margin="20,5">
 				<!-- Corrected Binding -->
 				<ListBox.ItemTemplate>
 					<DataTemplate DataType="models:XmlEntry">
 						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="{Binding Key}" FontWeight="Bold" Margin="5"/>
+							<TextBlock Text="{Binding Key}" FontWeight="Bold" Margin="20,5"/>
 							<TextBlock Text=": " />
-							<TextBlock Text="{Binding Value}" Margin="5"/>
+							<TextBlock Text="{Binding Value}" Margin="20,5"/>
 						</StackPanel>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
-		<Button Content="Save to Database" Command="{Binding SaveToDatabaseCommand}" Margin="5"/>
+		<Button Content="Save to Database" Command="{Binding SaveToDatabaseCommand}" Margin="20,5"/>
 		</StackPanel>
 	</ScrollViewer>
 </Window>
