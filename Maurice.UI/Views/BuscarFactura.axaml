@@ -5,6 +5,25 @@
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="250"
         x:Class="Maurice.UI.Views.BuscarFactura"
 		xmlns:vm="clr-namespace:Maurice.UI.ViewModels"
-		Title="BuscarFactura">
-  Welcome to Buscar!
+		Title="Buscar Factura"
+		Width="400"
+        Height="250">
+	<StackPanel Margin="15">
+		<TextBlock Text="Buscar por:" />
+		<ComboBox 
+			ItemsSource="{Binding SearchOptions}"
+			SelectedIndex="0"
+			MaxDropDownHeight="300"
+			Margin="1"
+			Width="370">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding OptionName}" />
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+
+		
+		<Button Content="Buscar" Command="{Binding Buscar}" Margin="0,20" />
+	</StackPanel>
 </Window>

@@ -1,6 +1,6 @@
 ﻿namespace Maurice.Core.Models
 {
-    public class RegimenFiscalOption
+    public class RegimenFiscalDBO
     {
         public string Codigo { get; set; }
         public string Descripcion { get; set; }

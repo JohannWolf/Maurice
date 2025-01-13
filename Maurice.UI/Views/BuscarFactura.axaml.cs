@@ -8,6 +8,7 @@ namespace Maurice.UI.Views
         public BuscarFactura()
         {
             InitializeComponent();
+            DataContext = new BuscarFacturaViewModel();
         }
     }
 }
